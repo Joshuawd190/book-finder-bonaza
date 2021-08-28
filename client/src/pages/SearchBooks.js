@@ -64,7 +64,6 @@ const SearchBooks = () => {
       console.error(err);
     }
   };
-
   // create function to handle saving a book to our database
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
@@ -79,12 +78,14 @@ const SearchBooks = () => {
 
     try {
       // const response = await saveBook(bookToSave, token);
-      const response = await saveBook({ variables: bookToSave });
+      const { data } = await saveBook({
+        variables: { input: bookToSave },
+      });
 
-      if (!response.ok) {
+      if (!data) {
         throw new Error('something went wrong!');
       }
-
+      console.log(data);
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
